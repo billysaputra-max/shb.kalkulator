@@ -93,10 +93,10 @@ function classifyNPStatus({ TN, molar }, planktonGroup) {
 /* ---------- shared input ---------- */
 function Field({ label, unit, val, set, step }) {
   return (
-    <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <span style={{ fontSize: 13, color: "#b3c5cc" }}>{label} {unit && <span style={{ color: "#6d8893" }}>({unit})</span>}</span>
-      <input type="number" step={step} value={val} placeholder="masukkan nilai" onChange={(e) => set(e.target.value)}
-        style={{ background: "#0e1c24", border: "1px solid #2a4450", borderRadius: 10, padding: "10px 12px", color: "#fff", fontSize: 16, outline: "none" }} />
+    <label style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
+      <span style={{ fontSize: 13, color: "#b3c5cc", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label} {unit && <span style={{ color: "#6d8893" }}>({unit})</span>}</span>
+      <input type="number" inputMode="decimal" step={step} value={val} placeholder="masukkan nilai" onChange={(e) => set(e.target.value)}
+        style={{ width: "100%", boxSizing: "border-box", background: "#0e1c24", border: "1px solid #2a4450", borderRadius: 10, padding: "11px 12px", color: "#fff", fontSize: 16, outline: "none" }} />
     </label>
   );
 }
@@ -119,7 +119,7 @@ function AmmoniaTab({ mobile }) {
     <>
       <p style={{ color: "#8aa3ad", fontSize: 14, marginTop: 0 }}>Menghitung amonia tak terionisasi (NH₃) — fraksi yang benar-benar toksik — dari total amonia, pH, suhu, dan salinitas.</p>
       <div style={{ background: "#152a35", borderRadius: 16, padding: mobile ? 14 : 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14 }}>
-        <Field label="NH4 / Total Amonia (TAN)" unit="mg/L" val={tan} set={setTan} step={0.1} />
+        <Field label={mobile ? "NH4 / TAN" : "NH4 / Total Amonia (TAN)"} unit="mg/L" val={tan} set={setTan} step={0.1} />
         <Field label="pH" val={pH} set={setPH} step={0.1} />
         <Field label="Suhu" unit="°C" val={temp} set={setTemp} step={1} />
         <Field label="Salinitas" unit="ppt" val={sal} set={setSal} step={1} />
@@ -284,8 +284,8 @@ function BiomassTab({ mobile }) {
     <>
       <p style={{ color: "#8aa3ad", fontSize: 14, marginTop: 0 }}>Memperkirakan biomassa udang di kolam dari jumlah pakan harian dan ABW. FR (feeding rate, %) diambil dari tabel referensi dengan interpolasi, lalu Biomassa = Pakan per hari ÷ FR × 100.</p>
       <div style={{ background: "#152a35", borderRadius: 16, padding: mobile ? 14 : 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14 }}>
-        <Field label="Feed per Day (F/D)" unit="kg" val={feed} set={setFeed} step={0.1} />
-        <Field label="ABW (Average Body Weight)" unit="gram" val={abw} set={setAbw} step={0.5} />
+        <Field label={mobile ? "Feed/Day (F/D)" : "Feed per Day (F/D)"} unit="kg" val={feed} set={setFeed} step={0.1} />
+        <Field label={mobile ? "ABW" : "ABW (Average Body Weight)"} unit="gram" val={abw} set={setAbw} step={0.5} />
       </div>
       {!result && (
         <div style={{ marginTop: 18, borderRadius: 16, padding: "22px 20px", background: "#152a35", border: "1px dashed #2a4450", textAlign: "center", color: "#7d97a1", fontSize: 14 }}>
@@ -353,6 +353,7 @@ export default function App() {
     : ["Toksisitas Amonia", "Rasio N:P · Plankton", "Prediksi Biomassa"];
   return (
     <div style={{ minHeight: "100vh", background: "#0e1c24", fontFamily: "system-ui, sans-serif", padding: mobile ? "16px 12px" : "24px 16px", color: "#e8eef0" }}>
+      <style>{`input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield}`}</style>
       <div style={{ maxWidth: 520, margin: "0 auto", width: "100%" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18, gap: 12 }}>
           <div>
