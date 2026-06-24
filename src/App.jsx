@@ -85,7 +85,7 @@ function Field({ label, unit, val, set, step }) {
   return (
     <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       <span style={{ fontSize: 13, color: "#b3c5cc" }}>{label} {unit && <span style={{ color: "#6d8893" }}>({unit})</span>}</span>
-      <input type="number" step={step} value={val} onChange={(e) => set(e.target.value)}
+      <input type="number" step={step} value={val} placeholder="masukkan nilai" onChange={(e) => set(e.target.value)}
         style={{ background: "#0e1c24", border: "1px solid #2a4450", borderRadius: 10, padding: "10px 12px", color: "#fff", fontSize: 16, outline: "none" }} />
     </label>
   );
@@ -93,10 +93,10 @@ function Field({ label, unit, val, set, step }) {
 
 /* ---------- Tab 1: NH3 ---------- */
 function AmmoniaTab() {
-  const [tan, setTan] = useState("1.0");
-  const [pH, setPH] = useState("8.0");
-  const [temp, setTemp] = useState("30");
-  const [sal, setSal] = useState("20");
+  const [tan, setTan] = useState("");
+  const [pH, setPH] = useState("");
+  const [temp, setTemp] = useState("");
+  const [sal, setSal] = useState("");
   const result = useMemo(() => {
     const t = parseFloat(tan), p = parseFloat(pH), tc = parseFloat(temp), s = parseFloat(sal);
     if ([t, p, tc, s].some(isNaN)) return null;
@@ -114,6 +114,11 @@ function AmmoniaTab() {
         <Field label="Suhu" unit="°C" val={temp} set={setTemp} step={1} />
         <Field label="Salinitas" unit="ppt" val={sal} set={setSal} step={1} />
       </div>
+      {!result && (
+        <div style={{ marginTop: 18, borderRadius: 16, padding: "22px 20px", background: "#152a35", border: "1px dashed #2a4450", textAlign: "center", color: "#7d97a1", fontSize: 14 }}>
+          Isi semua kolom di atas untuk melihat hasil.
+        </div>
+      )}
       {result && (
         <div style={{ marginTop: 18, borderRadius: 16, overflow: "hidden", background: result.level.bg, color: "#1a2a2a" }}>
           <div style={{ padding: "18px 20px", background: result.level.color, color: "#fff" }}>
@@ -148,10 +153,10 @@ function AmmoniaTab() {
 
 /* ---------- Tab 2: N:P ---------- */
 function NPTab() {
-  const [nh4, setNh4] = useState("0.5");
-  const [no2, setNo2] = useState("0.2");
-  const [no3, setNo3] = useState("1.0");
-  const [po4, setPo4] = useState("0.3");
+  const [nh4, setNh4] = useState("");
+  const [no2, setNo2] = useState("");
+  const [no3, setNo3] = useState("");
+  const [po4, setPo4] = useState("");
 
   const result = useMemo(() => {
     const a = parseFloat(nh4), b = parseFloat(no2), c = parseFloat(no3), d = parseFloat(po4);
@@ -171,6 +176,11 @@ function NPTab() {
         <Field label="NO3 (Nitrat)" unit="mg/L" val={no3} set={setNo3} step={0.1} />
         <Field label="PO4 (Fosfat)" unit="mg/L" val={po4} set={setPo4} step={0.1} />
       </div>
+      {!result && (
+        <div style={{ marginTop: 18, borderRadius: 16, padding: "22px 20px", background: "#152a35", border: "1px dashed #2a4450", textAlign: "center", color: "#7d97a1", fontSize: 14 }}>
+          Isi semua kolom di atas untuk melihat hasil.
+        </div>
+      )}
       {result && (
         <>
           <div style={{ marginTop: 18, borderRadius: 16, overflow: "hidden", background: result.status.bg, color: "#1a2a2a" }}>
